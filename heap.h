@@ -3,6 +3,7 @@
 #include <string>
 #include <algorithm>
 
+
 namespace Heap
 {
     template <class T>
@@ -18,8 +19,6 @@ namespace Heap
         bool is_heap();
 
         T &operator[](const int index);
-
-        void make_heap(std::vector<T>::itereator _first_pos, std::vector<T>::iterator _last_pos);
 
     private:
         template <class N>
@@ -152,12 +151,6 @@ namespace Heap
             return temp->_data;
         }
     }
-
-    template<class T>
-     void heap<T>::make_heap(std::vector<T>::itereator _first_pos, std::vector<T>::iterator _last_pos)
-     {
-         
-     }
 
     template <class T>
     void heap<T>::swap_(node<T> *_ptr1, node<T> *_ptr2)
