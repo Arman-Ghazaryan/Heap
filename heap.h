@@ -236,3 +236,93 @@ namespace Heap
         }
     }
 }
+
+
+#pragma once
+#include <vector>
+#include <string>
+#include <algorithm>
+
+int min;
+
+int find_min(std::vector<int> const &vec)
+{
+    int pos = 0;
+    for (int i = 1; i < vec.size(); i++)
+    {
+        if (vec[i] < vec[pos])
+            pos = i;
+    }
+    return pos;
+}
+
+int find_max(std::vector<int> const &vec, std::vector<int> const &pos_, int position)
+{
+    int pos = min;
+    for (int i = 0; i < vec.size(); i++)
+    {
+        if (vec[i] > vec[pos] && position != i && pos_[i] != i)
+            pos = i;
+    }
+    return pos;
+}
+
+int left_next(int ind)
+{
+    return 2 * ind + 1;
+}
+
+int right_next(int ind)
+{
+    return 2 * ind + 2;
+}
+
+int left_back(int ind)
+{
+    return (ind - 1) / 2;
+}
+
+int right_back(int ind)
+{
+    return (ind - 2) / 2;
+}
+
+std::vector<int> make_heap_(std::vector<int> const &_vec)
+{
+    std::vector<int> pos_(_vec.size(), -1);
+    std::vector<int> vec = _vec;
+    int pos = -1;
+    int temp;
+
+    min = find_min(vec);
+
+    for (int i = 0; i < vec.size(); i++)
+    {
+        pos = find_max(vec, pos_, pos);
+        if (pos % 2 != 0)
+        {
+        skip:
+            while (vec[pos] > vec[left_back(pos)])
+            {
+                temp = vec[pos];
+                vec[pos] = vec[left_back(pos)];
+                vec[left_back(pos)] = temp;
+                pos = left_back(pos);
+            }
+        }
+        else
+        {
+            while (vec[pos] > vec[right_back(pos)])
+            {
+                temp = vec[pos];
+                vec[pos] = vec[right_back(pos)];
+                vec[right_back(pos)] = temp;
+                pos = right_back(pos);
+                if (pos % 2 != 0)
+                    goto skip;
+            }
+        }
+        pos_[pos] = pos;
+    }
+    return vec;
+}
